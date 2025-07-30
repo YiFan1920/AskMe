@@ -37,3 +37,20 @@ html{
   align-self: flex-start;
   min-width: 20px;
 }
+
+.messages p {
+  margin: 0.5em 0;
+}
+
+.messages strong {
+  font-weight: bold;
+}
+
+.messages ul {
+  padding-left: 1.2em;
+  list-style-type: disc;
+}
+
+.messages li {
+  margin-bottom: 0.3em;
+}
