@@ -15,14 +15,18 @@ html{
 .messages{
   display: flex;
   flex-direction: column;
-  padding: 0px 300px;
-  padding-top: 30px;
+  padding-bottom: 50px;
+  padding-top: 10px;
+  scrollbar-width: none;
+  font-size: 16px;
 }
 .messages .userMsg{
   clear: both;
-  background-color: aquamarine;
-  padding: 15px;
-  border-radius: 30px;
+  background-color: #EFEFEF;
+  padding:5px;
+  padding-left: 22px;
+  padding-right: 22px;
+  border-radius: 40px 40px 10px 40px;
   max-width: 60vw;
   align-self: flex-end;
   min-width: 20px;
@@ -30,10 +34,11 @@ html{
 
 .messages .responseMsg{
   clear: both;
-  background-color: rgb(127, 127, 255);
-  padding: 15px;
+  padding:20px;
+  padding-left: 22px;
+  padding-right: 22px;
   border-radius: 30px;
-  max-width: 60vw;
+  max-width: 80vw;
   align-self: flex-start;
   min-width: 20px;
 }

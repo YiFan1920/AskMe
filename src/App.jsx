@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react';
 import "./App.css"
 import { IoCodeSlash, IoSend } from "react-icons/io5";
 import { GoogleGenAI } from "@google/genai";
@@ -11,38 +11,33 @@ const App = () => {
   const [isResponseScreen, setisResponseScreen] = useState(true);
   const [messages, setMessages] = useState([])
   const ai = new GoogleGenAI({apiKey: import.meta.env.VITE_SECRET_API_KEY});
-  
-  const hitRequest = async () =>{
-    if(message){
-      console.log(message)
-      const newMessages = [
-        ...messages,
-        {type: "userMsg", text: message},
-      ]
-      setMessages(newMessages);
-      generateResponse(newMessages)
-      setMessage("")
-      setisResponseScreen(true)
-    }
-    else{
-      alert("You must write somthing... !")
+  const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+    const hitRequest = async () => {
+    const trimmed = message.trim();
+    if (!trimmed) return alert("You must write something!");
+    setisResponseScreen(true);
+
+    const userMsg = { type: "userMsg", text: trimmed };
+    setMessages(prev => [...prev, userMsg]);
+    setMessage("");
+
+    try {
+      const response = await ai.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: `Answer briefly (max 50 words): ${trimmed}`,
+      });
+
+      setMessages(prev => [...prev, { type: "responseMsg", text: response.text }]);
+    } catch (error) {
+      console.error("AI request failed:", error);
     }
   };
-  async function generateResponse(msg) {
-    if(!msg.at(-1).text) return;
-    const prompt = `Answer briefly (max 50 words): ${msg.at(-1).text}`;
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: prompt,
-    });
-    const newMessages = [
-      ...messages, 
-      msg.at(-1),
-      {type: "responseMsg", text: response.text}
-    ]
-    setMessages(newMessages);
-    console.log(response.text);
-  };
+
   const newChat = () =>{
     setisResponseScreen(false);
     setMessages([]);
@@ -58,13 +53,13 @@ const App = () => {
     </div>
       {
         isResponseScreen?
-        <div className="middle h-[80vh]">
-          <div className="header w-[100vw] pt-[25px] flex justify-between items-center px-[200px]">
-            <h2 className='text-2xl'>AskMe</h2>
-            <button id='newChatBtn' onClick={newChat} className='bg-red-500 p-[10px] rounded-[30px] cursor-pointer text-[16px] px-[20px]'>New Chat</button>
+        <div className="middle flex flex-col h-[85vh] w-full">
+          <div className="header px-[35px] h-[80px] w-[100vw] flex justify-between items-center mx-auto">
+            <h2 className='text-[30px] font-borel pt-[25px] text-[#333333]'>AskMe</h2>
+            <button id='newChatBtn' onClick={newChat} className='cursor-pointer text-[16px] text-[#333333]'>New chat</button>
           </div>
 
-          <div className="messages">
+          <div className="messages flex-1 overflow-y-auto w-[90vw] mb-[-30px] md:w-[70vw] mx-auto">
             {
               messages?.map((msg, index) =>{
                 return (
@@ -72,6 +67,7 @@ const App = () => {
                   )
               })
             }
+          <div ref={messagesEndRef} />
           </div>
         </div>
         :
@@ -105,14 +101,14 @@ const App = () => {
       </div>
       </div>
       }
-      <div className={`bottom w-[100vw] flex flex-col justify-between items-center text-[#555555] text-[18px] ${isResponseScreen ? "h-[20vh]" : "h-[30vh] md:h-[30vh]"}`}>
-        <div className={`inputBox md:mb-[20px] flex items-center backdrop-blur-[80px] bg-black/10 h-[63px] rounded-[30px] w-[95vw] md:w-[70vw]`} style={{boxShadow: "0px 4px 30px 5px rgba(0,0,0,0.05)"}}>
+      <div className={`bottom w-[100vw] flex flex-col justify-between items-center text-[#555555] text-[16px] ${isResponseScreen ? "h-[15vh]" : "h-[30vh] md:h-[30vh]"}`}>
+        <div className={`inputBox flex items-center backdrop-blur-[80px] bg-black/10 h-[60px] rounded-[30px] w-[90vw] md:w-[70vw]`} style={{boxShadow: "0px 4px 30px 5px rgba(0,0,0,0.05)"}}>
           <input value={message} onChange={(e)=>{setMessage(e.target.value)}} onKeyDown={(e) => {if (e.key === 'Enter') {hitRequest();}}} type="text" className='p-[10px] pl-[30px] placeholder-[#888888] bg-transparent flex-1 outline-none border-none' placeholder='Write your message here...'/>
           {
             message == "" ? "" : <i className='mr-5 cursor-pointer text-[22px] text-{#555555]' onClick={hitRequest}><IoSend/></i>
           }
         </div>
-        <p className='mb-[25px] text-[16px] text-[#888888]'>Your very own personal assistant, powered by Gemini API.</p>
+        <p className='mb-[20px] text-[14px] text-[#888888]'>Your very own personal assistant, powered by Gemini API.</p>
       </div>
     </div>
     </>
