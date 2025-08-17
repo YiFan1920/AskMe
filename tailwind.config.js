@@ -8,5 +8,14 @@ export default {
     extend: {},
   },
   plugins: [],
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+        borel: ['Borel', 'cursive'],
+      },
+    },
+  },
+
 }
 
