@@ -17,26 +17,28 @@ const App = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-    const hitRequest = async () => {
-    const trimmed = message.trim();
-    if (!trimmed) return alert("You must write something!");
-    setisResponseScreen(true);
+    const hitRequest = async (text) => {
+      const msg = text || message;
+      if (!msg.trim()) return alert("You must write something!");
 
-    const userMsg = { type: "userMsg", text: trimmed };
-    setMessages(prev => [...prev, userMsg]);
-    setMessage("");
+      setisResponseScreen(true); // switch to response screen
 
-    try {
-      const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash",
-        contents: `Answer briefly (max 50 words): ${trimmed}`,
-      });
+      const userMsg = { type: "userMsg", text: msg };
+      setMessages(prev => [...prev, userMsg]);
+      setMessage(""); // clear input
 
-      setMessages(prev => [...prev, { type: "responseMsg", text: response.text }]);
-    } catch (error) {
-      console.error("AI request failed:", error);
-    }
-  };
+      try {
+        const response = await ai.models.generateContent({
+          model: "gemini-2.5-flash",
+          contents: `Answer briefly (max 50 words): ${msg}`,
+        });
+
+        setMessages(prev => [...prev, { type: "responseMsg", text: response.text }]);
+      } catch (err) {
+        console.error("AI request failed:", err);
+      }
+    };
+
 
   const newChat = () =>{
     setisResponseScreen(false);
@@ -75,23 +77,23 @@ const App = () => {
         <h1 className="text-[60px] md:text-[70px] mb-8 font-borel text-[#333333]">AskMe</h1>
         <div className="w-full overflow-x-auto">
         <div className="flex justify-center gap-4 min-w-max text-white">
-        <div className="card rounded-lg cursor-pointer transition-all hover:bg-black/35 relative bg-black/40 backdrop-blur-[100px] p-4 md:pt-[20px] md:pb-[30px] flex-shrink-0 md:w-[230px] flex flex-col justify-between">
+        <div className="card rounded-lg cursor-pointer transition-all hover:bg-black/35 relative bg-black/40 backdrop-blur-[100px] p-4 md:pt-[20px] md:pb-[30px] flex-shrink-0 md:w-[230px] flex flex-col justify-between" onClick={() => hitRequest("What is coding? How can we learn it.")}>
           <p className='text-[18px]'>What is coding?<br/>
             How can we learn it.</p>
             <i><IoCodeSlash className='absolute right-3 bottom-3 text-[20px]'/></i>
           </div>
-        <div className="card rounded-lg cursor-pointer transition-all hover:bg-black/35 relative bg-black/40 backdrop-blur-[100px] p-4 md:pt-[20px] md:pb-[30px] flex-shrink-0 md:w-[230px] flex flex-col justify-between">
+        <div className="card rounded-lg cursor-pointer transition-all hover:bg-black/35 relative bg-black/40 backdrop-blur-[100px] p-4 md:pt-[20px] md:pb-[30px] flex-shrink-0 md:w-[230px] flex flex-col justify-between" onClick={() => hitRequest("What will the weather be like tomorrow?")}>
           <p className='text-[18px]'>What will the weather<br/>
           be like tomorrow?</p>
             <i><IoCodeSlash className='absolute right-3 bottom-3 text-[20px]'/></i>
           </div>
-        <div className="card rounded-lg cursor-pointer transition-all hover:bg-black/35 relative bg-black/40 backdrop-blur-[100px] p-4 md:pt-[20px] md:pb-[30px] flex-shrink-0 md:w-[230px] flex flex-col justify-between">
+        <div className="card rounded-lg cursor-pointer transition-all hover:bg-black/35 relative bg-black/40 backdrop-blur-[100px] p-4 md:pt-[20px] md:pb-[30px] flex-shrink-0 md:w-[230px] flex flex-col justify-between" onClick={() => hitRequest("How many planets are there in our solar system?")}>
           <p className='text-[18px]'>How many planets<br />
             are there in our<br />
             solar system?</p>
             <i><IoCodeSlash className='absolute right-3 bottom-3 text-[20px]'/></i>
           </div>
-        <div className="card rounded-lg cursor-pointer transition-all hover:bg-black/35 relative bg-black/40 backdrop-blur-[100px] p-4 md:pt-[20px] md:pb-[30px] flex-shrink-0 md:w-[230px] flex flex-col justify-between">
+        <div className="card rounded-lg cursor-pointer transition-all hover:bg-black/35 relative bg-black/40 backdrop-blur-[100px] p-4 md:pt-[20px] md:pb-[30px] flex-shrink-0 md:w-[230px] flex flex-col justify-between" onClick={() => hitRequest("How is the job market for CS students right now?")}>
           <p className='text-[18px]'>How is the job market <br />
             for CS students <br />
             right now? </p>

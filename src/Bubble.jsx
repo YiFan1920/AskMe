@@ -7,8 +7,8 @@ export default function Bubble({color, size = 0 }) {
   useEffect(() => {
     let top = Math.random() * (window.innerHeight - size);
     let left = Math.random() * (window.innerWidth - size);
-    let dx = (Math.random() - 0.5) * 2; // horizontal speed
-    let dy = (Math.random() - 0.5) * 2; // vertical speed
+    let dx = (Math.random() - 0.5) * 5; // horizontal speed
+    let dy = (Math.random() - 0.5) * 5; // vertical speed
     setVelocity({ dx, dy });
     setPosition({ top, left });
 
