@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import "./App.css"
-import { IoCodeSlash, IoSend } from "react-icons/io5";
+import { IoCodeSlash, IoSend} from "react-icons/io5";
+import { FiEdit } from "react-icons/fi";
 import { GoogleGenAI } from "@google/genai";
 import ReactMarkdown from 'react-markdown';
 import Bubble from "./Bubble";
@@ -75,9 +76,9 @@ const App = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.1, ease: "easeInOut" }} // smooth fade-in
         >
-          <div className="header px-[35px] h-[80px] w-[100vw] flex justify-between items-center mx-auto">
-            <h2 className='text-[30px] font-borel pt-[25px] text-[#333333]'>AskMe</h2>
-            <button id='newChatBtn' onClick={newChat} className='cursor-pointer text-[16px] text-[#333333]'>New chat</button>
+          <div className="header md:[5vw] px-[15vw] h-[80px] w-[100vw] flex justify-between items-center mx-auto">
+            <h2 className='text-[30px] font-borel pt-[25px] text-transparent bg-clip-text bg-gradient-to-r from-[#3823B4] to-[#A61D66]'>AskMe</h2>
+            <button id='newChatBtn' onClick={newChat} className='cursor-pointer text-[16px] text-[#333333]'><i><FiEdit className='text-[25px]'/></i></button>
           </div>
           </motion.div>
 
@@ -139,12 +140,12 @@ const App = () => {
      <motion.div
       animate={{ height: isResponseScreen ? "15vh" : "30vh" }}
       transition={{ duration: 0.7, ease: "circOut" }}
-      className="fixed bottom-0 left-0 w-full flex flex-col justify-between items-center text-[#555555] text-[16px]"
+      className="fixed bottom-0 left-0 w-full flex flex-col justify-between items-center text-[#333333] text-[16px]"
     >
-        <div className={`inputBox flex items-center backdrop-blur-[80px] bg-black/10 h-[60px] rounded-[30px] w-[90vw] md:w-[70vw]`} style={{boxShadow: "0px 4px 30px 5px rgba(0,0,0,0.05)"}}>
+        <div className={`inputBox flex items-center backdrop-blur-[80px] bg-[#A7A7A7]/25 h-[60px] rounded-[30px] w-[90vw] md:w-[70vw]`} style={{boxShadow: "0px 4px 30px 5px rgba(0,0,0,0.05)"}}>
             <input value={message} onChange={(e)=>{setMessage(e.target.value)}} onKeyDown={(e) => {if (e.key === 'Enter') {hitRequest();}}} type="text" className='p-[10px] pl-[30px] placeholder-[#888888] bg-transparent flex-1 outline-none border-none' placeholder='Write your message here...'/>
           {
-            message == "" ? "" : <i className='mr-5 cursor-pointer text-[22px] text-{#555555]' onClick={hitRequest}><IoSend/></i>
+            message == "" ? "" : <i className='mr-5 cursor-pointer text-[22px] text-{#333333]' onClick={hitRequest}><IoSend/></i>
           }
         </div>
         <p className='mb-[20px] text-[14px] text-[#888888]'>Your very own personal assistant, powered by Gemini API.</p>
