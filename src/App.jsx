@@ -10,7 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const App = () => {
   const [message, setMessage] = useState("");
-  const [isResponseScreen, setisResponseScreen] = useState(true);
+  const [isResponseScreen, setisResponseScreen] = useState(false);
   const [messages, setMessages] = useState([])
   const ai = new GoogleGenAI({apiKey: import.meta.env.VITE_SECRET_API_KEY});
   const messagesEndRef = useRef(null);
