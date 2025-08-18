@@ -148,7 +148,8 @@ const App = () => {
             message == "" ? "" : <i className='mr-5 cursor-pointer text-[22px] text-{#333333]' onClick={hitRequest}><IoSend/></i>
           }
         </div>
-        <p className='mb-[3vh] text-[14px] text-[#888888]'>Your very own personal assistant, powered by Gemini API.</p>
+        <p className='text-[14px] text-[#888888]'>Your very own personal assistant, powered by Gemini API.</p>
+        <div className="container h-[1px] w-[1px]"></div>
         </motion.div>
       </div>
     </>
